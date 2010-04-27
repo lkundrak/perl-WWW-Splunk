@@ -1,6 +1,6 @@
 ---
 name: Net-Splunk
-version: 1.00
+version: 1.01
 author:
   - 'Lubomir Rintel <lkundrak@v3.sk>'
 abstract: Client library for Splunk log search engine
