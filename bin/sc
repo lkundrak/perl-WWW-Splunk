@@ -1,0 +1,145 @@
+=head1 NAME
+
+sc - Splunk Client
+
+=head1 SYNOPSIS
+
+sc
+[--host <host>]
+[--port <port>]
+[--login <login>]
+[--password <password>]
+[--insecure]
+<subcommand>
+[<arguments>,...]
+
+=head1 DESCRIPTION
+
+This is remote client for Splunk log search engine based upon L<Net::Splunk>.
+It is currently quite limited in capabilities, but intended and designed to
+be extended in future.
+
+=head1 OPTIONS
+
+=over
+
+=item B<< --host <host> >>
+
+Sets remote server to connect to. Defaults to localhost.
+
+=item B<< --port <port> >>
+
+Sets port of remote server to connect to. Defaults to 8089.
+Please note that this is the management port, not the WWW interface port.
+
+=item B<< --login <login> >>
+
+User name of the user to connect to Splunk as. Defaults to admin.
+The defaults for username and password will probably (hopefully?)
+not suit your configuration.
+
+=item B<< --password <password> >>
+
+Password of the user to connect to Splunk as. Defaults to changeme.
+
+=item B<--insecure>
+
+Tolerate SSL errors.
+
+=item B<< <subcommand> [<arguments>] >>
+
+Subcommand to run. Currently defined is just B<search>:
+
+=over 8
+
+=item B<< search <search string>, ... >>
+
+Conduct a search, output the raw log data as they are looked up.
+Terminate when the search is finished.
+
+=back
+
+=back
+
+=cut
+
+use Getopt::Long;
+use Net::Splunk;
+use LWP::UserAgent;
+use Pod::Usage;
+
+use strict;
+use warnings;
+
+# Subcommand dispatch
+
+my %commands = (
+	search	=> \&search,
+);
+
+# Command line options
+
+my $host = 'localhost';
+my $port = 8089;
+my $login = 'admin';
+my $password = 'changeme';
+my $insecure = 0;
+
+GetOptions (
+	"host=s"	=> \$host,
+	"port=i"	=> \$port,
+	"login=s"	=> \$login,
+	"password=s"	=> \$password,
+	"insecure"	=> \$insecure,
+	"h|help"	=> sub { pod2usage (0) },
+	"m|man"		=> sub { pod2usage (-verbose => 2) },
+) or die "Could not parse command line";
+
+# Dispatch
+
+my $subcommand = shift @ARGV;
+die "Missing subcommand" unless $subcommand;
+die "Invalid subcommand" unless exists $commands{$subcommand};
+
+my $splunk = new Net::Splunk ({
+	host	=> $host,
+	port	=> $port,
+	login	=> $login,
+	password => $password,
+	unsafe_ssl => $insecure,
+});
+
+exit $commands{$subcommand}->(@ARGV);
+
+# Implementation
+
+sub search
+{
+	my $sid = $splunk->start_search (join ' ', @_);
+
+	# Asynchronous search
+	until ($splunk->search_done ($sid)) {
+		print join "\n", (map { $_->{_raw} }
+			$splunk->search_results ($sid)), '';
+	}
+	$splunk->search_results ($sid);
+
+	return 0;
+}
+
+=head1 EXAMPLES
+
+  sc search warning
+
+=head1 SEE ALSO
+
+L<Net::Splunk>, L<Net::Splunk::API>
+
+=head1 AUTHORS
+
+Lubomir Rintel, L<< <lkundrak@v3.sk> >>
+
+The code is hosted on GitHub L<http://github.com/lkundrak/perl-Net-Splunk>.
+Bug fixes and feature enhancements are always welcome.
+
+=cut
