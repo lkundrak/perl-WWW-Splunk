@@ -1,5 +1,5 @@
 ---
-name: Net-Splunk
+name: WWW-Splunk
 version: 1.01
 author:
   - 'Lubomir Rintel <lkundrak@v3.sk>'
@@ -23,14 +23,14 @@ requires:
 configure_requires:
   Module::Build: 0.35
 provides:
-  Net::Splunk:
-    file: lib/Net/Splunk.pm
+  WWW::Splunk:
+    file: lib/WWW/Splunk.pm
     version: 1.00
-  Net::Splunk::API:
-    file: lib/Net/Splunk/API.pm
+  WWW::Splunk::API:
+    file: lib/WWW/Splunk/API.pm
     version: 1.00
-  Net::Splunk::XMLParser:
-    file: lib/Net/Splunk/XMLParser.pm
+  WWW::Splunk::XMLParser:
+    file: lib/WWW/Splunk/XMLParser.pm
 generated_by: Module::Build version 0.35
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html

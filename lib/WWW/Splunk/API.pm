@@ -1,10 +1,10 @@
 =head1 NAME
 
-Net::Splunk::API - Splunk REST client
+WWW::Splunk::API - Splunk REST client
 
 =head1 DESCRIPTION
 
-L<Net::Splunk::API> is a low-level interface to Splunk
+L<WWW::Splunk::API> is a low-level interface to Splunk
 log search engine. It deals with HTTP communication as well as
 working around certain interface glitches.
 
@@ -20,13 +20,13 @@ Remember the code is the best documentation for now.
 
 =cut
 
-package Net::Splunk::API;
+package WWW::Splunk::API;
 
 use LWP::UserAgent;
 use HTTP::Request::Common;
 use XML::Feed;
 use Text::CSV;
-use Net::Splunk::XMLParser;
+use WWW::Splunk::XMLParser;
 use Carp;
 
 use strict;
@@ -39,7 +39,7 @@ our $prefix = '/services';
 
 A constructor.
 
-  my $splunk = new Net::Splunk::API ({
+  my $splunk = new WWW::Splunk::API ({
           host    => $host,
           port    => $port,
           login   => $login,
@@ -235,7 +235,7 @@ sub request {
 		return $xml if $xml;
 
 		# Not an atom, well maybe it's Splunk response format
-		return Net::Splunk::XMLParser::parse ($response->content);
+		return WWW::Splunk::XMLParser::parse ($response->content);
 	} elsif ($1 eq 'text/csv') {
 		# Make the lines into dictionaries
 		return parse_csv ($response->content);
@@ -260,13 +260,13 @@ sub request {
 
 =head1 SEE ALSO
 
-L<Net::Splunk>, L<sc>
+L<WWW::Splunk>, L<sc>
 
 =head1 AUTHORS
 
 Lubomir Rintel, L<< <lkundrak@v3.sk> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-Net-Splunk>.
+The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
 
 =cut

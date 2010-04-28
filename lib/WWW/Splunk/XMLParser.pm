@@ -1,6 +1,6 @@
 =head1 NAME
 
-Net::Splunk::XMLParser - Parse Splunk XML format
+WWW::Splunk::XMLParser - Parse Splunk XML format
 
 =head1 DESCRIPTION
 
@@ -12,7 +12,7 @@ content type. They can be distinguished by a DOCTYPE.
 
 =cut
 
-package Net::Splunk::XMLParser;
+package WWW::Splunk::XMLParser;
 
 use strict;
 use warnings;
@@ -76,13 +76,13 @@ sub parsetree
 
 =head1 SEE ALSO
 
-L<Net::Splunk>, L<Net::Splunk::API>, L<XML::LibXML>
+L<WWW::Splunk>, L<WWW::Splunk::API>, L<XML::LibXML>
 
 =head1 AUTHORS
 
 Lubomir Rintel, L<< <lkundrak@v3.sk> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-Net-Splunk>.
+The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
 
 =cut

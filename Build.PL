@@ -4,7 +4,7 @@ use warnings;
 use Module::Build;
 
 my $build = Module::Build->new(
-	module_name	=> 'Net::Splunk',
+	module_name	=> 'WWW::Splunk',
 	license		=> 'perl',
 	dist_author	=> 'Lubomir Rintel <lkundrak@v3.sk>',
 	dist_version	=> '1.01',

@@ -1,12 +1,12 @@
 =head1 NAME
 
-Net::Splunk - Client library for Splunk log search engine
+WWW::Splunk - Client library for Splunk log search engine
 
 =head1 SYNOPSIS
 
-  use Net::Splunk;
+  use WWW::Splunk;
 
-  my $splunk = new Net::Splunk::API ({
+  my $splunk = new WWW::Splunk::API ({
           host    => $host,
           port    => $port,
           login   => $login,
@@ -31,17 +31,17 @@ and 4.1.1 search API.
 
 =cut
 
-package Net::Splunk;
+package WWW::Splunk;
 
 use strict;
 use warnings;
 
 our $VERSION = '1.00';
 
-use Net::Splunk::API;
+use WWW::Splunk::API;
 use Carp;
 
-use base qw/Net::Splunk::API/;
+use base qw/WWW::Splunk::API/;
 
 =head2 B<start_search> (F<string>)
 
@@ -96,8 +96,8 @@ Return an array of the matched events.
 If called multiple times, it only returns events which
 were added from the time of the last call.
 Oh, and you can't run multiple search concurrently
-with single L<Net::Splunk> instance. Otherwise,
-L<Net::Splunk> is perfectly thread-safe.
+with single L<WWW::Splunk> instance. Otherwise,
+L<WWW::Splunk> is perfectly thread-safe.
 
 =cut
 sub search_results
@@ -116,7 +116,7 @@ sub search_results
 
 Lubomir Rintel, L<< <lkundrak@v3.sk> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-Net-Splunk>.
+The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
 
 =cut

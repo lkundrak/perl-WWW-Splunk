@@ -1,11 +1,11 @@
-use Net::Splunk::XMLParser;
+use WWW::Splunk::XMLParser;
 use Test::More tests => 3;
 
 my $case1 = <<EOF;
 <?xml version=\'1.0\' encoding=\'UTF-8\'?>
 <response><sid>666</sid></response>
 EOF
-is_deeply ([ Net::Splunk::XMLParser::parse ($case1) ],
+is_deeply ([ WWW::Splunk::XMLParser::parse ($case1) ],
 	[ sid => 666 ], "Simple document parsed correctly");
 
 my $case2 = <<EOF;
@@ -31,7 +31,7 @@ my $case2 = <<EOF;
 	</list>
 </response>
 EOF
-is_deeply ([ Net::Splunk::XMLParser::parse ($case2) ], [
+is_deeply ([ WWW::Splunk::XMLParser::parse ($case2) ], [
 	{
 		'remoteSearch' => 'search index=default readlevel=2 foo',
 		'remoteTimeOrdered' => 'true'
@@ -53,5 +53,5 @@ my $case3 = <<EOF;
 	</hoo>
 </response>
 EOF
-eval { Net::Splunk::XMLParser::parse ($case3) };
+eval { WWW::Splunk::XMLParser::parse ($case3) };
 like ($@, qr/^Unknown XML element: hoo/, "Errored out on bad document");

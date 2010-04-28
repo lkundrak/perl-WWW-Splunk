@@ -17,7 +17,7 @@ sc
 
 =head1 DESCRIPTION
 
-This is remote client for Splunk log search engine based upon L<Net::Splunk>.
+This is remote client for Splunk log search engine based upon L<WWW::Splunk>.
 It is currently quite limited in capabilities, but intended and designed to
 be extended in future.
 
@@ -66,7 +66,7 @@ Terminate when the search is finished.
 =cut
 
 use Getopt::Long;
-use Net::Splunk;
+use WWW::Splunk;
 use LWP::UserAgent;
 use Pod::Usage;
 
@@ -103,7 +103,7 @@ my $subcommand = shift @ARGV;
 die "Missing subcommand" unless $subcommand;
 die "Invalid subcommand" unless exists $commands{$subcommand};
 
-my $splunk = new Net::Splunk ({
+my $splunk = new WWW::Splunk ({
 	host	=> $host,
 	port	=> $port,
 	login	=> $login,
@@ -135,13 +135,13 @@ sub search
 
 =head1 SEE ALSO
 
-L<Net::Splunk>, L<Net::Splunk::API>
+L<WWW::Splunk>, L<WWW::Splunk::API>
 
 =head1 AUTHORS
 
 Lubomir Rintel, L<< <lkundrak@v3.sk> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-Net-Splunk>.
+The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
 
 =cut
