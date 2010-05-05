@@ -54,12 +54,11 @@ sub start_search
 	my $string = shift;
 
 	$self->{events_consumed} = 0;
-	my @response = $self->post ('/search/jobs', {
+	my $response = $self->post ('/search/jobs', {
 		search => "search $string",
 	});
-	croak "Bad response" unless scalar @response == 2
-		and $response[0] eq 'sid';
-	my $sid = $response[1];
+	my $sid = $response->findvalue ('/response/sid');
+	croak "Bad response" unless defined $sid;
 	return $sid;
 }
 

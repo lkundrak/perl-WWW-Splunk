@@ -22,7 +22,8 @@ use Carp;
 
 =head2 B<parse> (F<string>)
 
-Return a perl structure from a XML string.
+Return a perl structure from a XML string, if it's
+parsable, otherwise return a raw XML::LibXML object
 
 =cut
 sub parse
@@ -30,7 +31,10 @@ sub parse
 	my $string = shift;
 
 	my $xml = XML::LibXML->load_xml (string => $string);
-	return parsetree ($xml, 0);
+	my @tree = eval { parsetree ($xml) };
+	return @tree unless $@;
+	undef $@;
+	return $xml;
 }
 
 =head2 B<parsetree> (F<XML::LibXML::Node>)
@@ -41,7 +45,6 @@ Parse a XML node tree recursively.
 sub parsetree
 {
 	my $xml = shift;
-	my $depth = shift;
 	my @retval;
 
 	foreach my $node ($xml->childNodes ()) {
@@ -61,13 +64,7 @@ sub parsetree
 			# Basically just ignore these
 			push @retval, parsetree ($node);
 		} else {
-			# These are standalone unknown tags
-			# Make the guesswork more safe:
-			my @children = $node->childNodes ();
-			croak "Unknown XML element: ".$node->nodeName
-				unless (scalar @children == 1 and
-					$children[0]->nodeType == XML_TEXT_NODE);
-			push @retval, $node->nodeName (), $node->textContent;
+			die "Unknown XML element: ".$node->nodeName
 		}
 	}
 
