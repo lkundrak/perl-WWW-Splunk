@@ -1,14 +1,23 @@
-1.02    Wed Apr 28 18:09:52 2010 +1000
+1.03    Wed May  5 08:21:18 2010 +0200
+======================================
+[FIXES]
+sc: Print the result of the last search iteration as well
+
+[CODE]
+WWW::Splunk::XMLParser: Do not attempt to grok arbitrary XML from Splunk, return XML::LibXML instance instead
+WWW::Splunk: Print error messages from splunk as well
+
+1.02    Wed Apr 28 18:09:52 2010 +0100
 ======================================
 [CODE]
 Rename Net::Splunk to WWW::Splunk
 
-1.01    Tue Apr 27 21:04:00 2010 +1000
+1.01    Tue Apr 27 21:04:00 2010 +0100
 ======================================
 [FIXES]
 Add a missing shebang to the launcher script.
 
 Initial release with search capability.
-1.00    Tue Apr 27 20:36:54 2010 +1000
+1.00    Tue Apr 27 20:36:54 2010 +0100
 ======================================
 Initial release with search capability.

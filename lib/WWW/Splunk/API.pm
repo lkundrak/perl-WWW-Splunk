@@ -32,7 +32,7 @@ use Carp;
 use strict;
 use warnings;
 
-our $VERSION = '1.00';
+our $VERSION = '1.03';
 our $prefix = '/services';
 
 =head2 B<new> (F<params>)

@@ -1,6 +1,6 @@
 ---
 name: WWW-Splunk
-version: 1.01
+version: 1.03
 author:
   - 'Lubomir Rintel <lkundrak@v3.sk>'
 abstract: Client library for Splunk log search engine
@@ -25,10 +25,10 @@ configure_requires:
 provides:
   WWW::Splunk:
     file: lib/WWW/Splunk.pm
-    version: 1.00
+    version: 1.03
   WWW::Splunk::API:
     file: lib/WWW/Splunk/API.pm
-    version: 1.00
+    version: 1.03
   WWW::Splunk::XMLParser:
     file: lib/WWW/Splunk/XMLParser.pm
 generated_by: Module::Build version 0.35
