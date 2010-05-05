@@ -221,7 +221,13 @@ sub request {
 
 	# Deal with HTTP errors
 	unless ($response->is_success) {
-		croak "HTTP Error: ".$response->status_line."\n".$response->content;
+		my $content = WWW::Splunk::XMLParser::parse ($response->content);
+		my $error = "HTTP Error: ".$response->status_line;
+		$error .= sprintf "\n%s: %s",
+			$content->findvalue ('/response/messages/msg/@type'),
+			$content->findvalue ('/response/messages/msg')
+			if eval { $content->isa ('XML::LibXML::Document') };
+		croak $error;
 	}
 
 	# Parse content
