@@ -115,16 +115,24 @@ exit $commands{$subcommand}->(@ARGV);
 
 # Implementation
 
+sub print_results
+{
+	my $splunk = shift;
+	my $sid = shift;
+
+	print join "\n", (map { $_->{_raw} }
+		$splunk->search_results ($sid)), '';
+}
+
 sub search
 {
 	my $sid = $splunk->start_search (join ' ', @_);
 
 	# Asynchronous search
 	until ($splunk->search_done ($sid)) {
-		print join "\n", (map { $_->{_raw} }
-			$splunk->search_results ($sid)), '';
+		print_results ($splunk, $sid);
 	}
-	$splunk->search_results ($sid);
+	print_results ($splunk, $sid);
 
 	return 0;
 }
