@@ -129,10 +129,9 @@ sub search
 	my $sid = $splunk->start_search (join ' ', @_);
 
 	# Asynchronous search
-	until ($splunk->search_done ($sid)) {
+	until ($splunk->results_read ($sid)) {
 		print_results ($splunk, $sid);
 	}
-	print_results ($splunk, $sid);
 
 	return 0;
 }
