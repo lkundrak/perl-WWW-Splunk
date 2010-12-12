@@ -53,7 +53,7 @@ sub start_search
 	my $self = shift;
 	my $string = shift;
 
-	$self->{events_consumed} = 0;
+	$self->{results_consumed} = 0;
 	my $response = $self->post ('/search/jobs', {
 		search => "search $string",
 	});
@@ -104,11 +104,12 @@ sub search_results
 	my $self = shift;
 	my $sid = shift;
 
-	my @events = $self->get ('/search/jobs/'.$sid.'/events?offset='.
-		$self->{events_consumed});
-	$self->{events_consumed} += scalar @events;
+	my @results = $self->get ('/search/jobs/'.$sid.'/results?count=1024&offset='.
+		$self->{results_consumed});
+	$self->{results_consumed} += scalar @results;
 
-	return @events;
+	return @results;
+}
 }
 
 =head1 AUTHORS
