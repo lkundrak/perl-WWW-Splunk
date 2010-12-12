@@ -1,15 +1,27 @@
 ---
-name: WWW-Splunk
-version: 1.03
+abstract: 'Client library for Splunk log search engine'
 author:
   - 'Lubomir Rintel <lkundrak@v3.sk>'
-abstract: Client library for Splunk log search engine
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
 build_requires:
   Test::More: 0
   XML::LibXML: 0
+configure_requires:
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3603'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: WWW-Splunk
+provides:
+  WWW::Splunk:
+    file: lib/WWW/Splunk.pm
+    version: 1.03
+  WWW::Splunk::API:
+    file: lib/WWW/Splunk/API.pm
+    version: 1.10
+  WWW::Splunk::XMLParser:
+    file: lib/WWW/Splunk/XMLParser.pm
 requires:
   Carp: 0
   Getopt::Long: 0
@@ -20,18 +32,6 @@ requires:
   Text::CSV: 0
   XML::Feed: 0
   XML::LibXML: 0
-configure_requires:
-  Module::Build: 0.35
-provides:
-  WWW::Splunk:
-    file: lib/WWW/Splunk.pm
-    version: 1.03
-  WWW::Splunk::API:
-    file: lib/WWW/Splunk/API.pm
-    version: 1.03
-  WWW::Splunk::XMLParser:
-    file: lib/WWW/Splunk/XMLParser.pm
-generated_by: Module::Build version 0.35
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+resources:
+  license: http://dev.perl.org/licenses/
+version: 1.10

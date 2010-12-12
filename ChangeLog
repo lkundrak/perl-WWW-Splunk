@@ -1,3 +1,12 @@
+1.10    Sun Dec 12 13:40:21 2010 +0200
+======================================
+[FIXES]
+WWW::Splunk: Read processed results instead of raw events so that aggregates work [rt#59231]
+WWW::Splunk: Add results_read() method to reliably detect when results are read.
+
+[CODE]
+WWW::Splunk: Read results in bigger batches to improve performance
+
 1.03    Wed May  5 08:21:18 2010 +0200
 ======================================
 [FIXES]
