@@ -229,7 +229,8 @@ sub request {
 		$error .= sprintf "\n%s: %s",
 			$content->findvalue ('/response/messages/msg/@type'),
 			$content->findvalue ('/response/messages/msg')
-			if eval { $content->isa ('XML::LibXML::Document') };
+			if eval { $content->isa ('XML::LibXML::Document') }
+				and $content->documentElement->nodeName eq 'response';
 		croak $error;
 	}
 
