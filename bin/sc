@@ -21,6 +21,30 @@ This is remote client for Splunk log search engine based upon L<WWW::Splunk>.
 It is currently quite limited in capabilities, but intended and designed to
 be extended in future.
 
+=cut
+
+use Getopt::Long qw/GetOptionsFromArray/;
+use WWW::Splunk;
+use LWP::UserAgent;
+use Pod::Usage;
+
+use strict;
+use warnings;
+
+# Subcommand dispatch
+
+my %commands = (
+	search	=> \&search,
+);
+
+# Command line options
+
+my $host = 'localhost';
+my $port = 8089;
+my $login = 'admin';
+my $password = 'changeme';
+my $insecure = 0;
+
 =head1 OPTIONS
 
 =over
@@ -54,58 +78,7 @@ Subcommand to run. Currently defined is just B<search>.
 
 =back
 
-=head1 COMMANDS
-
 =cut
-
-=head2 B<search>
-[-t|--since <time>]
-[-T|--until <time>]
-<search string>
-
-Conduct a search, output the raw log data as they are looked up.
-Terminate when the search is finished.
-
-=over 4
-
-=item B<-t>, B<--since> B<< <time> >>
-
-Cut off at given time. The time specification is any string understood
-by L<Date::Manip>. Most common formats apply as well as human-readable
-relative time specifications (see L<EXAMPLES>).
-
-Defaults to unlimited.
-
-=item B<-T>, B<--until> B<< <time> >>
-
-Do not look for entries newer than given time. The format of the time
-specification is the same as for B<--since> option.
-
-=back
-
-=cut
-
-use Getopt::Long qw/GetOptionsFromArray/;
-use WWW::Splunk;
-use LWP::UserAgent;
-use Pod::Usage;
-
-use strict;
-use warnings;
-
-# Subcommand dispatch
-
-my %commands = (
-	search	=> \&search,
-);
-
-# Command line options
-
-my $host = 'localhost';
-my $port = 8089;
-my $login = 'admin';
-my $password = 'changeme';
-my $insecure = 0;
 
 new Getopt::Long::Parser (
         config => [qw/require_order/]
@@ -145,6 +118,35 @@ sub print_results
 	print join "\n", (map { $_->{_raw} }
 		$splunk->search_results ($sid)), '';
 }
+
+=head1 COMMANDS
+
+=head2 B<search>
+[-t|--since <time>]
+[-T|--until <time>]
+<search string>
+
+Conduct a search, output the raw log data as they are looked up.
+Terminate when the search is finished.
+
+=over 4
+
+=item B<-t>, B<--since> B<< <time> >>
+
+Cut off at given time. The time specification is any string understood
+by L<Date::Manip>. Most common formats apply as well as human-readable
+relative time specifications (see L<EXAMPLES>).
+
+Defaults to unlimited.
+
+=item B<-T>, B<--until> B<< <time> >>
+
+Do not look for entries newer than given time. The format of the time
+specification is the same as for B<--since> option.
+
+=back
+
+=cut
 
 sub search
 {
