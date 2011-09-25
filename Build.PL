@@ -18,6 +18,7 @@ my $build = Module::Build->new(
 		'Text::CSV'	=> 0,
 		'XML::Feed'	=> 0,
 		'XML::LibXML'	=> 0,
+		'Date::Manip'	=> 0,
 	},
 	build_requires => {
 		'Test::More'	=> 0,

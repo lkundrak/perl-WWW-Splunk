@@ -6,7 +6,7 @@ sc - Splunk Client
 
 =head1 SYNOPSIS
 
-sc
+B<sc>
 [--host <host>]
 [--port <port>]
 [--login <login>]
@@ -50,22 +50,42 @@ Tolerate SSL errors.
 
 =item B<< <subcommand> [<arguments>] >>
 
-Subcommand to run. Currently defined is just B<search>:
+Subcommand to run. Currently defined is just B<search>.
 
-=over 8
+=back
 
-=item B<< search <search string>, ... >>
+=head1 COMMANDS
+
+=cut
+
+=head2 B<search>
+[-t|--since <time>]
+[-T|--until <time>]
+<search string>
 
 Conduct a search, output the raw log data as they are looked up.
 Terminate when the search is finished.
 
-=back
+=over 4
+
+=item B<-t>, B<--since> B<< <time> >>
+
+Cut off at given time. The time specification is any string understood
+by L<Date::Manip>. Most common formats apply as well as human-readable
+relative time specifications (see L<EXAMPLES>).
+
+Defaults to unlimited.
+
+=item B<-T>, B<--until> B<< <time> >>
+
+Do not look for entries newer than given time. The format of the time
+specification is the same as for B<--since> option.
 
 =back
 
 =cut
 
-use Getopt::Long;
+use Getopt::Long qw/GetOptionsFromArray/;
 use WWW::Splunk;
 use LWP::UserAgent;
 use Pod::Usage;
@@ -87,7 +107,9 @@ my $login = 'admin';
 my $password = 'changeme';
 my $insecure = 0;
 
-GetOptions (
+new Getopt::Long::Parser (
+        config => [qw/require_order/]
+)->getoptions (
 	"host=s"	=> \$host,
 	"port=i"	=> \$port,
 	"login=s"	=> \$login,
@@ -126,7 +148,13 @@ sub print_results
 
 sub search
 {
-	my $sid = $splunk->start_search (join ' ', @_);
+	my ($since, $until);
+        GetOptionsFromArray (\@_,
+                't|since=s' => \$since,
+                'T|until=s' => \$until,
+        ) or die 'Bad arguments to search';
+
+	my $sid = $splunk->start_search (join (' ', @_), $since, $until);
 
 	# Asynchronous search
 	until ($splunk->results_read ($sid)) {
@@ -138,7 +166,13 @@ sub search
 
 =head1 EXAMPLES
 
-  sc search warning
+=over
+
+=item B<sc --host splunk.example.net --login user --password s1kr3t2 --since '2 days ago' --until yesterday search 'network AND error | head 10'>
+
+Perform a simple search query limited by given time frame.
+
+=back
 
 =head1 SEE ALSO
 

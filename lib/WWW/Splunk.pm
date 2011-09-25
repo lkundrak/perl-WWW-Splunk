@@ -42,10 +42,11 @@ our $VERSION = '1.03';
 
 use WWW::Splunk::API;
 use Carp;
+use Date::Manip;
 
 use base qw/WWW::Splunk::API/;
 
-=head2 B<start_search> (F<string>)
+=head2 B<start_search> (F<string>) [(F<since>)] [(F<until>]
 
 Initiate a search, return a SID (Search ID) string.
 
@@ -54,10 +55,18 @@ sub start_search
 {
 	my $self = shift;
 	my $string = shift;
+	my $since = shift;
+	my $until = shift;
+
+	# Format dates
+	($since, $until) = map { scalar UnixDate (ParseDate ($_) || $_, '%O') || $_ }
+		($since, $until);
 
 	$self->{results_consumed} = 0;
 	my $response = $self->post ('/search/jobs', {
 		search => "search $string",
+		(defined $since ? (earliest_time => $since) : ()),
+		(defined $until ? (latest_time => $until) : ()),
 	});
 	my $sid = $response->findvalue ('/response/sid');
 	croak "Bad response" unless defined $sid;
