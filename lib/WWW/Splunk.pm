@@ -59,7 +59,7 @@ sub start_search
 	my $until = shift;
 
 	# Format dates
-	($since, $until) = map { scalar UnixDate (ParseDate ($_) || $_, '%O') || $_ }
+	($since, $until) = map { defined $_ ? scalar UnixDate (ParseDate ($_) || $_, '%O') || $_ : undef }
 		($since, $until);
 
 	$self->{results_consumed} = 0;
