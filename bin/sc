@@ -114,9 +114,27 @@ sub print_results
 {
 	my $splunk = shift;
 	my $sid = shift;
+	my $format = shift;
 
-	print join "\n", (map { $_->{_raw} }
-		$splunk->search_results ($sid)), '';
+	my @results = $splunk->search_results ($sid);
+	return unless @results;
+	$format ||= exists $results[0]->{_raw} ? 'raw' : 'compact';
+
+	if ($format eq 'compact') {
+		foreach my $entry (@results) {
+			print join " ", map { "$_=$entry->{$_}" } sort keys %$entry;
+			print "\n";
+		}
+	} elsif ($format eq 'long') {
+		foreach my $entry (@results) {
+			print "$_=$entry->{$_}\n" foreach sort keys %$entry;
+			print "\n";
+		}
+	} elsif ($format eq 'raw') {
+		print join "\n", (map { $_->{_raw} || '(no raw log)' } @results), '';
+	} else {
+		die "Unknown format: $format";
+	}
 }
 
 =head1 COMMANDS
@@ -124,6 +142,7 @@ sub print_results
 =head2 B<search>
 [-t|--since <time>]
 [-T|--until <time>]
+[-f|--format compact|long|raw]
 <search string>
 
 Conduct a search, output the raw log data as they are looked up.
@@ -144,23 +163,28 @@ Defaults to unlimited.
 Do not look for entries newer than given time. The format of the time
 specification is the same as for B<--since> option.
 
+=item B<-f>, B<--format> I<compact>|I<long>|I<raw>
+
+Switch output format style.
+
 =back
 
 =cut
 
 sub search
 {
-	my ($since, $until);
+	my ($since, $until, $format);
         GetOptionsFromArray (\@_,
                 't|since=s' => \$since,
                 'T|until=s' => \$until,
+                'f|format=s' => \$format,
         ) or die 'Bad arguments to search';
 
 	my $sid = $splunk->start_search (join (' ', @_), $since, $until);
 
 	# Asynchronous search
 	until ($splunk->results_read ($sid)) {
-		print_results ($splunk, $sid);
+		print_results ($splunk, $sid, $format)
 	}
 
 	return 0;
