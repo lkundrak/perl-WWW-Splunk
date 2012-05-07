@@ -224,7 +224,8 @@ sub request {
 
 	# Deal with HTTP errors
 	unless ($response->is_success) {
-		my $content = WWW::Splunk::XMLParser::parse ($response->content);
+		my $content = WWW::Splunk::XMLParser::parse ($response->content)
+			if $response->header ('Content-Type') =~ /xml/;
 		my $error = "HTTP Error: ".$response->status_line;
 		$error .= sprintf "\n%s: %s",
 			$content->findvalue ('/response/messages/msg/@type'),

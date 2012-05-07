@@ -68,6 +68,8 @@ sub start_search
 		(defined $since ? (earliest_time => $since) : ()),
 		(defined $until ? (latest_time => $until) : ()),
 	});
+	die 'Unexpected response format '
+		unless $response and ref $response eq 'XML::LibXML::Document';
 	my $sid = $response->findvalue ('/response/sid');
 	croak "Bad response" unless defined $sid;
 	return $sid;
