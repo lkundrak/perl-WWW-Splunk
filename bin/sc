@@ -112,26 +112,23 @@ exit $commands{$subcommand}->(@ARGV);
 
 sub print_results
 {
-	my $splunk = shift;
-	my $sid = shift;
 	my $format = shift;
+	return unless @_;
 
-	my @results = $splunk->search_results ($sid);
-	return unless @results;
-	$format ||= exists $results[0]->{_raw} ? 'raw' : 'compact';
+	$format ||= exists $_[0]->{_raw} ? 'raw' : 'compact';
 
 	if ($format eq 'compact') {
-		foreach my $entry (@results) {
+		foreach my $entry (@_) {
 			print join " ", map { "$_=$entry->{$_}" } sort keys %$entry;
 			print "\n";
 		}
 	} elsif ($format eq 'long') {
-		foreach my $entry (@results) {
+		foreach my $entry (@_) {
 			print "$_=$entry->{$_}\n" foreach sort keys %$entry;
 			print "\n";
 		}
 	} elsif ($format eq 'raw') {
-		print join "\n", (map { $_->{_raw} || '(no raw log)' } @results), '';
+		print join "\n", (map { $_->{_raw} || '(no raw log)' } @_), '';
 	} else {
 		die "Unknown format: $format";
 	}
@@ -156,12 +153,18 @@ Cut off at given time. The time specification is any string understood
 by L<Date::Manip>. Most common formats apply as well as human-readable
 relative time specifications (see L<EXAMPLES>).
 
+Use C<rt> for real time search, optionally with specifcation of the
+search window, such as C<rt-10> for 10-second window, or C<rt-1m>
+for one minute.
+
 Defaults to unlimited.
 
 =item B<-T>, B<--until> B<< <time> >>
 
 Do not look for entries newer than given time. The format of the time
 specification is the same as for B<--since> option.
+
+If this or I<--since> is C<rt> a real-time search is conducted.
 
 =item B<-f>, B<--format> I<compact>|I<long>|I<raw>
 
@@ -180,11 +183,18 @@ sub search
                 'f|format=s' => \$format,
         ) or die 'Bad arguments to search';
 
-	my $sid = $splunk->start_search (join (' ', @_), $since, $until);
+	if (($since and $since =~ /^rt/) or ($until and $until =~ /^rt/)) {
+		# Real time search
+		$splunk->rt_search (join (' ', @_), sub {
+			print_results ($format => @_);
+		}, $since, $until);
+	} else {
+		my $sid = $splunk->start_search (join (' ', @_), $since, $until);
 
-	# Asynchronous search
-	until ($splunk->results_read ($sid)) {
-		print_results ($splunk, $sid, $format)
+		until ($splunk->results_read ($sid)) {
+			my @results = $splunk->search_results ($sid);
+			print_results ($format => @results);
+		}
 	}
 
 	return 0;
@@ -197,6 +207,10 @@ sub search
 =item B<sc --host splunk.example.net --login user --password s1kr3t2 --since '2 days ago' --until yesterday search 'network AND error | head 10'>
 
 Perform a simple search query limited by given time frame.
+
+=item B<sc --since 'rt-30' search 'source=/var/log/httpd/access_log |stats count by http_status_code'
+
+Perform a simple real-time search.
 
 =back
 
