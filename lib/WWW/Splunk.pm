@@ -75,6 +75,36 @@ sub start_search
 	return $sid;
 }
 
+=head2 B<rt_search> (F<string>) (F<callback>) [(F<since>)] [(F<until>]
+
+Initiate a real-time search, calling a callback for each line matched.
+
+Finishes only if connection terminates (potentially never), returning number of
+results consumed.
+
+=cut
+sub rt_search
+{
+	my $self = shift;
+	my $string = shift;
+	my $callback = shift;
+	my $since = shift || 'rt';
+	my $until = shift || 'rt';
+	my $counter = 0;
+
+	$self->post ('/search/jobs/export', {
+		search => "search $string",
+		earliest_time => $since,
+		latest_time => $until,
+		search_mode => 'realtime',
+	}, sub {
+		$callback->(@_);
+		$counter++;
+	});
+
+	return $counter;
+}
+
 =head2 B<search_done> (F<sid>)
 
 Return true if the search is finished.
