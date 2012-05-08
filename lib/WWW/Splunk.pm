@@ -22,14 +22,14 @@ WWW::Splunk - Client library for Splunk log search engine
   print " results found\n";
 
 Please consider this an alpha quality code, whose API can change
-at any time, until we reach version 2.0. There are known glitches
+at any time, until we reach version 3.0. There are known glitches
 in the code quality now.
 Remember the code is the best documentation for now.
 
 =head1 DESCRIPTION
 
-This module contains utility functions for Splunk 4.1
-and 4.1.1 search API.
+This module contains utility functions for Splunk API, implementing
+version 4.1 API, verified to work with 4.2 and 4.3 versions.
 
 =cut
 
@@ -38,7 +38,7 @@ package WWW::Splunk;
 use strict;
 use warnings;
 
-our $VERSION = '1.03';
+our $VERSION = '2.0';
 
 use WWW::Splunk::API;
 use Carp;
