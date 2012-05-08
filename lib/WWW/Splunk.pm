@@ -86,7 +86,7 @@ sub search_done
 	my $sid = shift;
 
 	my $search = $self->get ('/search/jobs/'.$sid);
-	return $search->{done};
+	return $search->{isDone};
 }
 
 =head2 B<poll_search> (F<sid>)

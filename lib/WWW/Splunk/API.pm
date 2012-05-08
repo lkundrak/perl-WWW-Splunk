@@ -68,57 +68,6 @@ sub new
 	bless $self, $class;
 }
 
-=head2 B<parse_csv> (F<string>)
-
-Make the splunk-produced CSV into a hash or
-an array of hashes.
-
-=cut
-sub parse_csv
-{
-	my $content = shift;
-
-	my @retval;
-	my @header;
-	my $line = 0;
-	my $eiq;
-	my $csv = new Text::CSV ({ binary => 1 });
-
-	foreach (split /\n/, $content) {
-		$line++;
-
-		# Parse line. Continue previous one if
-		# we encountered an EIQ error
-		$_ = "$eiq\n$_" if $eiq;
-		unless ($csv->parse ($_)) {
-			my ($code, $msg, $col) = $csv->error_diag ();
-			if ($code == 2027) {
-				# "Quoted field not terminated"
-				# Continue on the next line
-				$eiq = $_;
-				next;
-			} else {
-				croak "CSV Error: $msg ($line:$col)";
-			}
-		}
-		undef $eiq;
-		my @fields = $csv->fields ();
-
-		# First line?
-		unless (@header) {
-			@header = @fields;
-			next;
-		}
-
-		# Lines into hashes
-		push @retval, { map {
-			$_ =~ /^__/ ? () : ($_ => shift @fields)
-		} @header };
-	}
-
-	return $#retval ? @retval : $retval[0];
-}
-
 =head2 B<delete> (F<parameters>)
 
 Wrapper around HTTP::Request::Common::DELETE ().
@@ -201,16 +150,6 @@ sub request {
 		$request = new HTTP::Request ($method, $url);
 	}
 
-	# TODO: We should inject parameters more elegantly
-	my $output_mode = 'csv';
-	if ($request->method eq 'POST') {
-		$request->content (($request->content ? $request->content.'&' : '').
-			'output_mode='.$output_mode);
-		$request->header ('Content-Length' => length ($request->content));
-	} else {
-		$request->uri ($request->uri.($request->uri =~ /\?/ ? '&' : '?').
-			'output_mode='.$output_mode);
-	}
 
 	# Run it
 	my $response = $self->{agent}->request ($request);
@@ -243,9 +182,6 @@ sub request {
 		my @ret = WWW::Splunk::XMLParser::parse ($xml);
 		return $#ret ? @ret : $ret[0] if @ret;
 		return $xml;
-	} elsif ($1 eq 'text/csv') {
-		# Make the lines into dictionaries
-		return parse_csv ($response->content);
 	} elsif ($response->code eq 204) {
 		# "No content"
 		# Happens when events are requested immediately
