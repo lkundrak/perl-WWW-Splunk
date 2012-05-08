@@ -16,7 +16,6 @@ my $build = Module::Build->new(
 		'Pod::Usage'	=> 0,
 		'Test::More'	=> 0,
 		'Text::CSV'	=> 0,
-		'XML::Feed'	=> 0,
 		'XML::LibXML'	=> 0,
 		'Date::Manip'	=> 0,
 	},

@@ -28,13 +28,12 @@ parsable, otherwise return a raw XML::LibXML object
 =cut
 sub parse
 {
-	my $string = shift;
+	my $xml = shift;
 
-	my $xml = XML::LibXML->load_xml (string => $string);
 	my @tree = eval { parsetree ($xml) };
-	return @tree unless $@;
+	return $#tree ? @tree : $tree[0] unless $@;
 	undef $@;
-	return $xml;
+	return ();
 }
 
 =head2 B<parsetree> (F<XML::LibXML::Node>)
@@ -47,28 +46,56 @@ sub parsetree
 	my $xml = shift;
 	my @retval;
 
-	foreach my $node ($xml->childNodes ()) {
+	my $has_elements = grep { $_->nodeType eq XML_ELEMENT_NODE }
+		$xml->nonBlankChildNodes ();
+
+	foreach my $node ($xml->nonBlankChildNodes ()) {
 
 		# Not interested in anything but elements
-		next unless $node->nodeType eq XML_ELEMENT_NODE;
+		next if $has_elements and $node->nodeType ne XML_ELEMENT_NODE;
 
-		if ($node->nodeName () eq 'list') {
+		# Structure or structure wrapped in Atom
+		if ($node->nodeName () eq 'list' or
+			$node->nodeName () eq 's:list') {
 			push @retval, [ parsetree ($node) ];
-		} elsif ($node->nodeName () eq 'dict') {
+		} elsif ($node->nodeName () eq 'dict' or
+			$node->nodeName () eq 's:dict') {
 			push @retval, { parsetree ($node) };
-		} elsif ($node->nodeName () eq 'key') {
+		} elsif ($node->nodeName () eq 'key' or
+			$node->nodeName () eq 's:key') {
 			push @retval, $node->getAttribute ('name')
-				=> $node->textContent;
+				=> scalar parsetree($node);
 		} elsif ($node->nodeName () eq 'response' or
-			$node->nodeName () eq 'item') {
+			$node->nodeName () eq 'item' or
+			$node->nodeName () eq 's:item') {
 			# Basically just ignore these
 			push @retval, parsetree ($node);
+		} elsif ($node->nodeName () eq 'entry') {
+			# Crippled Atom envelope
+			foreach my $node ($node->childNodes ()) {
+				return parsetree ($node) if $node->nodeName () eq 'content';
+			}
+		} elsif ($node->nodeType eq XML_TEXT_NODE) {
+			return $node->textContent;
+
+		# Results
+		} elsif ($node->nodeName () eq 'results') {
+			return map { { parsetree ($_) } }
+				grep { $_->nodeName eq 'result' }
+				$node->childNodes;
+		} elsif ($node->nodeName () eq 'field') {
+			push @retval, $node->getAttribute ('k')
+				=> scalar parsetree($node);
+		} elsif ($node->nodeName () eq 'value') {
+			return $node->textContent;
+
+		# Errors
 		} else {
 			die "Unknown XML element: ".$node->nodeName
 		}
 	}
 
-	return @retval;
+	return wantarray ? @retval : $retval[0];
 }
 
 =head1 SEE ALSO

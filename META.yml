@@ -19,7 +19,6 @@ requires:
   Pod::Usage: 0
   Test::More: 0
   Text::CSV: 0
-  XML::Feed: 0
   XML::LibXML: 0
 configure_requires:
   Module::Build: 0.35

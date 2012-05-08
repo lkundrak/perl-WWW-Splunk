@@ -24,7 +24,6 @@ package WWW::Splunk::API;
 
 use LWP::UserAgent;
 use HTTP::Request::Common;
-use XML::Feed;
 use Text::CSV;
 use WWW::Splunk::XMLParser;
 use Carp;
@@ -240,13 +239,10 @@ sub request {
 		croak "Missing or invalid Content-Type: $_";
 	}
 	if ($1 eq 'text/xml') {
-
-		# Attempt to parse Atom XML
-		my $xml = XML::Feed->parse (\$response->content);
-		return $xml if $xml;
-
-		# Not an atom, well maybe it's Splunk response format
-		return WWW::Splunk::XMLParser::parse ($response->content);
+		my $xml = XML::LibXML->load_xml (string => $response->content);
+		my @ret = WWW::Splunk::XMLParser::parse ($xml);
+		return $#ret ? @ret : $ret[0] if @ret;
+		return $xml;
 	} elsif ($1 eq 'text/csv') {
 		# Make the lines into dictionaries
 		return parse_csv ($response->content);
