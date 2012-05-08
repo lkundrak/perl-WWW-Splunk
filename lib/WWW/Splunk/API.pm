@@ -263,8 +263,6 @@ sub request {
 	} else {
 		# TODO: We probably can't do much about RAW
 		# format, yet we could parse at least JSON
-		use Data::Dumper;
-		die Dumper $response;
 		croak "Unknown content type: $1";
 	}
 }
