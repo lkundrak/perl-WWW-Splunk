@@ -86,7 +86,8 @@ sub parsetree
 		} elsif ($node->nodeName () eq 'field') {
 			push @retval, $node->getAttribute ('k')
 				=> scalar parsetree($node);
-		} elsif ($node->nodeName () eq 'value') {
+		} elsif ($node->nodeName () eq 'value'
+			or $node->nodeName () eq 'v') {
 			return $node->textContent;
 
 		# Errors
