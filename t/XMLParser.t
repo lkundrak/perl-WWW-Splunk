@@ -110,8 +110,8 @@ is_deeply (WWW::Splunk::XMLParser::parse ($case2), {
 		app => 'search',
 		can_write => 'true',
 		perms => {
-			read => [ nobody ],
-			write => [ nobody ]
+			read => [ 'nobody' ],
+			write => [ 'nobody' ]
 		}
 	},
 	cursorTime => '2038-01-19T04:14:07.000+01:00',
