@@ -56,7 +56,8 @@ sub new
 
 	# Set up user agent unless an existing one was passed
 	unless ($self->{agent}) {
-		$self->{agent} = new LWP::UserAgent;
+		$self->{agent} = new LWP::UserAgent
+			(ssl_opts =>  {verify_hostname => (not $self->{unsafe_ssl})});
 		$self->{agent}->cookie_jar ({});
 		$self->{agent}->credentials (
 			delete ($self->{host}).':'.(delete $self->{port}),
@@ -167,7 +168,7 @@ sub request {
 		my($response, $ua, $h) = @_;
 
 		# Deal with HTTPS errors
-		# TODO: Get rid of --insecure magic, newrt Crypt::SSLeay does this right
+		# newer LWP::UserAgent does this right
 		if ($_ = $response->header ('Client-SSL-Warning')) {
 			# Why does LWP tolerate these by default?
 			croak "SSL Error: $_" unless $self->{unsafe_ssl};
