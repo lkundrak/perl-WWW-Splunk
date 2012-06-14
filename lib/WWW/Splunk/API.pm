@@ -226,6 +226,9 @@ sub request {
 		croak $error;
 	}
 
+	# We've gotten the response already
+	return if $callback;
+
 	# Parse content from synchronous responses
 	# TODO: use callback and m_media_type matchspecs
 	if ($content_type eq 'text/xml') {
