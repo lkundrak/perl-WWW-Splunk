@@ -6,7 +6,7 @@ WWW::Splunk - Client library for Splunk log search engine
 
   use WWW::Splunk;
 
-  my $splunk = new WWW::Splunk::API ({
+  my $splunk = new WWW::Splunk ({
           host    => $host,
           port    => $port,
           login   => $login,
