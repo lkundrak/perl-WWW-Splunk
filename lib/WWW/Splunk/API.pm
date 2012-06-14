@@ -52,6 +52,8 @@ sub new
 	my $class = shift;
 	my $self = shift;
 
+	$self->{port} ||= 8089;
+	$self->{host} ||= 'localhost';
 	$self->{url} ||= 'https://'.$self->{host}.':'.$self->{port};
 
 	# Set up user agent unless an existing one was passed
