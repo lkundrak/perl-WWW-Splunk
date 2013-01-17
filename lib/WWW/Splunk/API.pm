@@ -153,6 +153,11 @@ sub request {
 	# Construct the request
 	my $request;
 	if (ref $method and ref $method eq 'CODE') {
+ 
+ 		# HTTP::Request::Common doesn't like being passed undef for $data..
+ 		my %empty = (empty=>'1');
+		$data = \%empty unless (defined($data));
+
 		# Most likely a HTTP::Request::Common
 		$request = $method->($url, $data);
 	} else {
