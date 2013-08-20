@@ -122,8 +122,8 @@ my $case3 = XML::LibXML->load_xml (string => <<EOF);
 <?xml version=\'1.0\' encoding=\'UTF-8\'?>
 <response><sid>666</sid></response>
 EOF
-is (WWW::Splunk::XMLParser::parse ($case3),
-	undef, "Raw document 1 not touched");
+isa_ok (WWW::Splunk::XMLParser::parse ($case3),
+	'XML::LibXML::Document', "Raw document 1");
 
 my $case4 = XML::LibXML->load_xml (string => <<EOF);
 <response>
@@ -132,8 +132,8 @@ my $case4 = XML::LibXML->load_xml (string => <<EOF);
 	</messages>
 </response>
 EOF
-is (WWW::Splunk::XMLParser::parse ($case4),
-	undef, "Raw document 2 not touched");
+isa_ok (WWW::Splunk::XMLParser::parse ($case4),
+	'XML::LibXML::Document', "Raw document 2");
 
 my $case5 = XML::LibXML->load_xml (string => <<EOF);
 <?xml version="1.0" encoding="UTF-8"?>

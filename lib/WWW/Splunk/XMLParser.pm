@@ -31,9 +31,8 @@ sub parse
 	my $xml = shift;
 
 	my @tree = eval { parsetree ($xml) };
-	return $#tree ? @tree : $tree[0] unless $@;
-	undef $@;
-	return ();
+	return $xml if $@;
+	return $#tree ? @tree : $tree[0];
 }
 
 =head2 B<parsetree> (F<XML::LibXML::Node>)

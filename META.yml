@@ -1,6 +1,6 @@
 ---
 name: WWW-Splunk
-version: 2.02
+version: 2.03
 author:
   - 'Lubomir Rintel <lkundrak@v3.sk>'
 abstract: Client library for Splunk log search engine
