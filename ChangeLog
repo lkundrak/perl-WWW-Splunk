@@ -1,3 +1,12 @@
+2.03	Tue Aug 20 16:07:15 2013 +0200
+======================================
+[FIXES]
+Fix dealing with empty XML responses
+
+[DOC]
+5.0.3 Splunk seems to work
+Update changelog
+
 2.02    Thu Jun 14 10:24:25 2012 +0200
 ======================================
 [FIXES]
