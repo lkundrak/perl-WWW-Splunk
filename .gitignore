@@ -2,3 +2,4 @@ Build
 _build/
 blib/
 Net-Splunk-*.tar.gz
+META.yml
