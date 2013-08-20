@@ -234,7 +234,7 @@ sub request {
 	if ($content_type eq 'text/xml') {
 		my $xml = XML::LibXML->load_xml (string => $response->content);
 		my @ret = WWW::Splunk::XMLParser::parse ($xml);
-		return $#ret ? @ret : $ret[0] if @ret;
+		return $#ret ? @ret : $ret[0] if defined @ret;
 		return $xml;
 	} elsif ($response->code eq 204) {
 		# "No content"
