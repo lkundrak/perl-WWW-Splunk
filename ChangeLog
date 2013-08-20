@@ -1,3 +1,9 @@
+2.04    Tue Aug 20 17:29:57 2013 +0200
+======================================
+[FIXES]
+Drop META.yml from the repository
+Make parser return the raw XML document if it could not be parsed
+
 2.03	Tue Aug 20 16:07:15 2013 +0200
 ======================================
 [FIXES]
