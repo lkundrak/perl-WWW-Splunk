@@ -13,11 +13,6 @@ for API definition.
 
 This module is designed to be Splunk API version agnostic.
 
-Please consider this an alpha quality code, whose API can change
-at any time, until we reach version 2.0. There are known glitches
-in the code quality now.
-Remember the code is the best documentation for now.
-
 =cut
 
 package WWW::Splunk::API;

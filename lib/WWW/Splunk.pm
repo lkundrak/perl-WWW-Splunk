@@ -21,15 +21,10 @@ WWW::Splunk - Client library for Splunk log search engine
   }
   print " results found\n";
 
-Please consider this an alpha quality code, whose API can change
-at any time, until we reach version 3.0. There are known glitches
-in the code quality now.
-Remember the code is the best documentation for now.
-
 =head1 DESCRIPTION
 
 This module contains utility functions for Splunk API, implementing
-version 4.1 API, verified to work with 4.2 and 4.3 versions.
+version 4.1 API, verified to work with 4.2, 4.3 and 5.0.3 versions.
 
 =cut
 
