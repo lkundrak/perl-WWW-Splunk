@@ -1,3 +1,45 @@
+2.02    Thu Jun 14 10:24:25 2012 +0200
+======================================
+[FIXES]
+Do not attempt to interpret response after request is finished if it was already handled asynchronously
+Sane defaults for host/port API usage
+Fix documentation
+Fix insecure magic
+
+2.01    Thu May 10 11:45:31 2012 +0200
+======================================
+[FIXES]
+Fix a warning
+Fix raw value parsing
+
+2.0     Wed May 9 00:29:47 2012 +0200
+======================================
+[FIXES]
+Remove a debugging leftover
+Kill a warning
+
+[CODE]
+Add utility support for real-time searches
+Add library support for real-time searches
+Drop use of CSV API, replace with XML
+XMLParser: Handle more type of XML documents
+Add support for different output formats
+Extra checking of a response
+
+[DOC]
+Update versioning information.
+
+1.11    Sun Sep 25 17:13:15 2011 +0200
+======================================
+[FIXES]
+HTML responses do not contain response messages
+
+[CODE]
+Add support for limiting the search query with a time frame
+
+[DOC]
+Nicer POD inlining
+
 1.10    Sun Dec 12 13:40:21 2010 +0200
 ======================================
 [FIXES]
