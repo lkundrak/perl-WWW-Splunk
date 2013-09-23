@@ -111,6 +111,8 @@ sub search_done
 	my $sid = shift;
 
 	my $search = $self->get ('/search/jobs/'.$sid);
+#use Data::Dumper;
+#warn Dumper $search->toStringC14N;
 	return $search->{isDone};
 }
 

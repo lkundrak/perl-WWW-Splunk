@@ -208,7 +208,7 @@ sub search
 
 Perform a simple search query limited by given time frame.
 
-=item B<sc --since 'rt-30' search 'source=/var/log/httpd/access_log |stats count by http_status_code'
+=item B<sc --since 'rt-30' search 'source=/var/log/httpd/access_log |stats count by http_status_code'>
 
 Perform a simple real-time search.
 
