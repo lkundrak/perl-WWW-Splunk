@@ -74,7 +74,7 @@ sub parsetree
 			foreach my $node ($node->childNodes ()) {
 				return parsetree ($node) if $node->nodeName () eq 'content';
 			}
-		} elsif ($node->nodeType eq XML_TEXT_NODE) {
+		} elsif ($node->nodeType eq XML_TEXT_NODE or $node->nodeName () eq '#cdata-section') {
 			return $node->textContent;
 
 		# Results
