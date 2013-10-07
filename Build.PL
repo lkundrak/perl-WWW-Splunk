@@ -22,7 +22,12 @@ my $build = Module::Build->new(
 	build_requires => {
 		'Test::More'	=> 0,
 		'XML::LibXML'	=> 0,
-	}
+	},
+	meta_merge => {
+		resources => {
+			repository => 'https://github.com/lkundrak/perl-WWW-Splunk',
+		},
+	},
 );
 
 $build->create_build_script;
