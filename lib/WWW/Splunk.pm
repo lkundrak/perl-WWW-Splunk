@@ -12,6 +12,7 @@ WWW::Splunk - Client library for Splunk log search engine
           login   => $login,
           password => $password,
           unsafe_ssl => 1,
+          verbose => 0,
   });
 
   my $sid = $splunk->start_search ('selinux avc');

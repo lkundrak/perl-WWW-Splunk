@@ -39,6 +39,7 @@ A constructor.
           login   => $login,
           password => $password,
           unsafe_ssl => 0,
+          verbose => 0,
   });
 
 =cut
@@ -50,6 +51,7 @@ sub new
 	$self->{port} ||= 8089;
 	$self->{host} ||= 'localhost';
 	$self->{url} ||= 'https://'.$self->{host}.':'.$self->{port};
+	$self->{verbose} ||= 0;
 
 	# Set up user agent unless an existing one was passed
 	unless ($self->{agent}) {
@@ -74,6 +76,7 @@ Wrapper around HTTP::Request::Common::DELETE ().
 sub delete
 {
 	my $self = shift;
+	print "DELETE" if $self->{verbose};
 	$self->request (\&DELETE, @_);
 }
 
@@ -85,6 +88,7 @@ Wrapper around HTTP::Request::Common::POST ().
 sub post
 {
 	my $self = shift;
+	print "POST" if $self->{verbose};
 	$self->request (\&POST, @_);
 }
 
@@ -96,6 +100,7 @@ Wrapper around HTTP::Request::Common::GET ().
 sub get
 {
 	my $self = shift;
+	print "GET" if $self->{verbose};
 	$self->request (\&GET, @_);
 }
 
@@ -108,6 +113,7 @@ Not used anywhere in splunk API
 sub head
 {
 	my $self = shift;
+	print "HEAD" if $self->{verbose};
 	$self->request (\&HEAD, @_);
 }
 
@@ -120,6 +126,7 @@ Not used anywhere in splunk API
 sub put
 {
 	my $self = shift;
+	print "PUT" if $self->{verbose};
 	$self->request (\&PUT, @_);
 }
 
@@ -146,6 +153,16 @@ sub request {
 	my $callback = shift;
 
 	my $url = $self->{url}.$prefix.$location;
+	if ($self->{verbose}) {
+		print " $url\n";
+		if (defined $data) {
+			foreach my $key (sort keys %$data) {
+				my $value = $data->{$key};
+				$value =~ s/\n/ /msg;
+				print "- $key => $value\n";
+			}
+		}
+	}
 
 	# Construct the request
 	my $request;
