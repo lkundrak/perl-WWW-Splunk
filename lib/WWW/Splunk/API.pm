@@ -168,7 +168,11 @@ sub request {
 	my $request;
 	if (ref $method and ref $method eq 'CODE') {
 		# Most likely a HTTP::Request::Common
-		$request = $method->($url, $data);
+		if (! defined $data) {
+			$request = $method->($url);
+		} else {
+			$request = $method->($url, $data);
+		}
 	} else {
 		# A method string
 		$request = new HTTP::Request ($method, $url);
