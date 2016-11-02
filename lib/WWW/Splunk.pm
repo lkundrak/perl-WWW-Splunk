@@ -42,7 +42,7 @@ use Date::Manip;
 
 use base qw/WWW::Splunk::API/;
 
-=head2 B<start_search> (F<string>) [(F<since>)] [(F<until>]
+=head2 B<start_search> (F<string>) [(F<since>)] [(F<until>)]
 
 Initiate a search, return a SID (Search ID) string.
 
@@ -71,7 +71,7 @@ sub start_search
 	return $sid;
 }
 
-=head2 B<rt_search> (F<string>) (F<callback>) [(F<since>)] [(F<until>]
+=head2 B<rt_search> (F<string>) (F<callback>) [(F<since>)] [(F<until>)]
 
 Initiate a real-time search, calling a callback for each line matched.
 
