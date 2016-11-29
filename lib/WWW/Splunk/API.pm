@@ -187,13 +187,6 @@ sub request {
 	$self->{agent}->add_handler (response_header => sub {
 		my($response, $ua, $h) = @_;
 
-		# Deal with HTTPS errors
-		# newer LWP::UserAgent does this right
-		if ($_ = $response->header ('Client-SSL-Warning')) {
-			# Why does LWP tolerate these by default?
-			croak "SSL Error: $_" unless $self->{unsafe_ssl};
-		}
-
 		# Do not think of async processing of error responses
 		return 0 unless $response->is_success;
 
