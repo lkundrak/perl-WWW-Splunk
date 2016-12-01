@@ -180,7 +180,7 @@ sub request {
 		$request = new HTTP::Request ($method, $url);
 	}
 
-	my $content_type;
+	my $content_type = '';
 	my $buffer;
 
 	$self->{agent}->remove_handler ('response_header');
@@ -190,10 +190,14 @@ sub request {
 		# Do not think of async processing of error responses
 		return 0 unless $response->is_success;
 
-		# Decide if we're going async
-		$response->header ('Content-Type') =~ /^([^\s;]+)/
-			or croak "Missing or invalid Content-Type: $_";
-		$content_type = $1;
+		my $content_type_header = $response->header('Content-Type') // '';
+		if ($content_type_header =~ /^([^\s;]+)/) {
+			$content_type = $1;
+		} elsif ($response->code ne 204) {
+			# Sometimes splunk return HTTP 204 NO CONTENT during poll_search() call,
+			# Content-Type header is empty in this case. We must not croak in this case.
+			croak "Missing or invalid Content-Type: $content_type_header";
+		}
 
 		if ($callback) {
 			$response->{default_add_content} = 0;
