@@ -6,7 +6,7 @@ use Module::Build;
 my $build = Module::Build->new(
 	module_name	=> 'WWW::Splunk',
 	license		=> 'perl',
-	dist_author	=> 'Lubomir Rintel <lkundrak@v3.sk>',
+	dist_author	=> 'Michal Josef Spacek <skim@cpan.org>',
 	dist_version	=> '2.05',
 	requires	=> {
 		'Carp'		=> 0,
@@ -25,7 +25,7 @@ my $build = Module::Build->new(
 	},
 	meta_merge => {
 		resources => {
-			repository => 'https://github.com/lkundrak/perl-WWW-Splunk',
+			repository => 'https://github.com/tupinek/perl-WWW-Splunk',
 		},
 	},
 );
