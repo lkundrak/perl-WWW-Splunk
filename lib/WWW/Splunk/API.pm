@@ -60,8 +60,10 @@ sub new
 		$self->{agent}->cookie_jar ({});
 		$self->{agent}->credentials (
 			delete ($self->{host}).':'.(delete $self->{port}),
-			'/splunk', delete $self->{login},
-			delete $self->{password});
+			'/splunk',
+			delete $self->{login},
+			delete $self->{password},
+		);
 		$self->{agent}->agent ("$class/$VERSION ");
 	}
 
