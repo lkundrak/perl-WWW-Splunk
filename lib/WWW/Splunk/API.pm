@@ -65,7 +65,7 @@ sub new
 			'/splunk',
 			delete $self->{login},
 			delete $self->{password},
-		);
+		) if exists $self->{login};
 		$self->{agent}->agent ("$class/$VERSION ");
 	}
 

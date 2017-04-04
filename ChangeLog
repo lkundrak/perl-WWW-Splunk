@@ -7,6 +7,7 @@ Proper handling of HTTP 204 response
 Remove extra check for Client-SSL-Warning header
 
 [CODE]
+Add support for Kerberos (e.g. via LWP::Authen::Negotiate)
 Add verbose parameter
 
 [DOC]
