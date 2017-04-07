@@ -281,4 +281,8 @@ Michal Josef Špaček L<< <skim@cpan.org> >>
 The code is hosted on GitHub L<http://github.com/tupinek/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
 
+=head1 LICENSE
+
+ This is free software; you can redistribute it and/or modify it under the same terms as the Perl 5 programming language system itself.
+
 =cut
