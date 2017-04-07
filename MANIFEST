@@ -7,3 +7,4 @@ MANIFEST
 t/XMLParser.t
 ChangeLog
 META.yml
+META.json
