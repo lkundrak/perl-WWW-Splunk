@@ -4,6 +4,7 @@ ChangeLog
 lib/WWW/Splunk.pm
 lib/WWW/Splunk/API.pm
 lib/WWW/Splunk/XMLParser.pm
+LICENSE
 MANIFEST
 META.json
 META.yml
