@@ -8,5 +8,6 @@ LICENSE
 MANIFEST
 META.json
 META.yml
+README
 t/pod.t
 t/XMLParser.t
