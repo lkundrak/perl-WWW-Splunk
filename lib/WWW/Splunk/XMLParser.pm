@@ -22,7 +22,7 @@ use warnings;
 use XML::LibXML qw/:libxml/;
 use Carp;
 
-our $VERSION = '2.05';
+our $VERSION = '2.06';
 
 =head2 B<parse> (F<string>)
 

@@ -42,15 +42,15 @@
    "provides" : {
       "WWW::Splunk" : {
          "file" : "lib/WWW/Splunk.pm",
-         "version" : "2.05"
+         "version" : "2.06"
       },
       "WWW::Splunk::API" : {
          "file" : "lib/WWW/Splunk/API.pm",
-         "version" : "2.05"
+         "version" : "2.06"
       },
       "WWW::Splunk::XMLParser" : {
          "file" : "lib/WWW/Splunk/XMLParser.pm",
-         "version" : "2.05"
+         "version" : "2.06"
       }
    },
    "release_status" : "stable",
@@ -62,5 +62,5 @@
          "url" : "https://github.com/tupinek/perl-WWW-Splunk"
       }
    },
-   "version" : "2.05"
+   "version" : "2.06"
 }
