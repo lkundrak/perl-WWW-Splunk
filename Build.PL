@@ -9,6 +9,7 @@ my $build = Module::Build->new(
 	dist_author	=> 'Michal Josef Spacek <skim@cpan.org>',
 	dist_version	=> '2.06',
 	requires	=> {
+		'perl'          => 5.010,
 		'Carp'		=> 0,
 		'Getopt::Long'	=> 0,
 		'HTTP::Request::Common' => 0,

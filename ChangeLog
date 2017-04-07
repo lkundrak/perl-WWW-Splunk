@@ -3,6 +3,7 @@
 [DOC]
 Add LICENSE file
 Add LICENSE header to doc
+Add minimal version of Perl
 Add README file
 Fix email in doc
 
