@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 WWW::Splunk::API - Splunk REST client
@@ -26,7 +28,7 @@ use Carp;
 use strict;
 use warnings;
 
-our $VERSION = '2.0';
+our $VERSION = '2.07';
 our $prefix = '/services';
 
 =head2 B<new> (F<params>)
@@ -39,6 +41,7 @@ A constructor.
           login   => $login,
           password => $password,
           unsafe_ssl => 0,
+          verbose => 0,
   });
 
 =cut
@@ -50,6 +53,7 @@ sub new
 	$self->{port} ||= 8089;
 	$self->{host} ||= 'localhost';
 	$self->{url} ||= 'https://'.$self->{host}.':'.$self->{port};
+	$self->{verbose} ||= 0;
 
 	# Set up user agent unless an existing one was passed
 	unless ($self->{agent}) {
@@ -58,8 +62,10 @@ sub new
 		$self->{agent}->cookie_jar ({});
 		$self->{agent}->credentials (
 			delete ($self->{host}).':'.(delete $self->{port}),
-			'/splunk', delete $self->{login},
-			delete $self->{password});
+			'/splunk',
+			delete $self->{login},
+			delete $self->{password},
+		) if exists $self->{login};
 		$self->{agent}->agent ("$class/$VERSION ");
 	}
 
@@ -74,6 +80,7 @@ Wrapper around HTTP::Request::Common::DELETE ().
 sub delete
 {
 	my $self = shift;
+	print "DELETE" if $self->{verbose};
 	$self->request (\&DELETE, @_);
 }
 
@@ -85,6 +92,7 @@ Wrapper around HTTP::Request::Common::POST ().
 sub post
 {
 	my $self = shift;
+	print "POST" if $self->{verbose};
 	$self->request (\&POST, @_);
 }
 
@@ -96,6 +104,7 @@ Wrapper around HTTP::Request::Common::GET ().
 sub get
 {
 	my $self = shift;
+	print "GET" if $self->{verbose};
 	$self->request (\&GET, @_);
 }
 
@@ -108,6 +117,7 @@ Not used anywhere in splunk API
 sub head
 {
 	my $self = shift;
+	print "HEAD" if $self->{verbose};
 	$self->request (\&HEAD, @_);
 }
 
@@ -120,6 +130,7 @@ Not used anywhere in splunk API
 sub put
 {
 	my $self = shift;
+	print "PUT" if $self->{verbose};
 	$self->request (\&PUT, @_);
 }
 
@@ -146,38 +157,49 @@ sub request {
 	my $callback = shift;
 
 	my $url = $self->{url}.$prefix.$location;
+	if ($self->{verbose}) {
+		print " $url\n";
+		if (defined $data) {
+			foreach my $key (sort keys %$data) {
+				my $value = $data->{$key};
+				$value =~ s/\n/ /msg;
+				print "- $key => $value\n";
+			}
+		}
+	}
 
 	# Construct the request
 	my $request;
 	if (ref $method and ref $method eq 'CODE') {
 		# Most likely a HTTP::Request::Common
-		$request = $method->($url, $data);
+		if (! defined $data) {
+			$request = $method->($url);
+		} else {
+			$request = $method->($url, $data);
+		}
 	} else {
 		# A method string
 		$request = new HTTP::Request ($method, $url);
 	}
 
-	my $content_type;
+	my $content_type = '';
 	my $buffer;
 
 	$self->{agent}->remove_handler ('response_header');
 	$self->{agent}->add_handler (response_header => sub {
 		my($response, $ua, $h) = @_;
 
-		# Deal with HTTPS errors
-		# newer LWP::UserAgent does this right
-		if ($_ = $response->header ('Client-SSL-Warning')) {
-			# Why does LWP tolerate these by default?
-			croak "SSL Error: $_" unless $self->{unsafe_ssl};
-		}
-
 		# Do not think of async processing of error responses
 		return 0 unless $response->is_success;
 
-		# Decide if we're going async
-		$response->header ('Content-Type') =~ /^([^\s;]+)/
-			or croak "Missing or invalid Content-Type: $_";
-		$content_type = $1;
+		my $content_type_header = $response->header('Content-Type') // '';
+		if ($content_type_header =~ /^([^\s;]+)/) {
+			$content_type = $1;
+		} elsif ($response->code ne 204) {
+			# Sometimes splunk return HTTP 204 NO CONTENT during poll_search() call,
+			# Content-Type header is empty in this case. We must not croak in this case.
+			croak "Missing or invalid Content-Type: $content_type_header";
+		}
 
 		if ($callback) {
 			$response->{default_add_content} = 0;
@@ -253,9 +275,14 @@ L<WWW::Splunk>, L<sc>
 
 =head1 AUTHORS
 
-Lubomir Rintel, L<< <lkundrak@v3.sk> >>
+Lubomir Rintel, L<< <lkundrak@v3.sk> >>,
+Michal Josef Špaček L<< <skim@cpan.org> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
+The code is hosted on GitHub L<http://github.com/tupinek/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
+
+=head1 LICENSE
+
+ This is free software; you can redistribute it and/or modify it under the same terms as the Perl 5 programming language system itself.
 
 =cut

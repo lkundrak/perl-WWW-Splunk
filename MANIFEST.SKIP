@@ -1,0 +1,17 @@
+^\.git
+\bblib\b
+^Makefile$
+\.bak$
+\.old$
+cover_db/
+_build/
+pm_to_blib
+MANIFEST.SKIP
+MANIFEST.bak
+TODO
+CONCEPT
+MYMETA.json
+MYMETA.yml
+cover_db/
+.travis.yml
+^Build$

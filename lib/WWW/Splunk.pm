@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 WWW::Splunk - Client library for Splunk log search engine
@@ -12,6 +14,7 @@ WWW::Splunk - Client library for Splunk log search engine
           login   => $login,
           password => $password,
           unsafe_ssl => 1,
+          verbose => 0,
   });
 
   my $sid = $splunk->start_search ('selinux avc');
@@ -33,7 +36,7 @@ package WWW::Splunk;
 use strict;
 use warnings;
 
-our $VERSION = '2.0';
+our $VERSION = '2.07';
 
 use WWW::Splunk::API;
 use Carp;
@@ -41,7 +44,7 @@ use Date::Manip;
 
 use base qw/WWW::Splunk::API/;
 
-=head2 B<start_search> (F<string>) [(F<since>)] [(F<until>]
+=head2 B<start_search> (F<string>) [(F<since>)] [(F<until>)]
 
 Initiate a search, return a SID (Search ID) string.
 
@@ -70,7 +73,7 @@ sub start_search
 	return $sid;
 }
 
-=head2 B<rt_search> (F<string>) (F<callback>) [(F<since>)] [(F<until>]
+=head2 B<rt_search> (F<string>) (F<callback>) [(F<since>)] [(F<until>)]
 
 Initiate a real-time search, calling a callback for each line matched.
 
@@ -170,10 +173,15 @@ sub results_read
 
 =head1 AUTHORS
 
-Lubomir Rintel, L<< <lkundrak@v3.sk> >>
+Lubomir Rintel, L<< <lkundrak@v3.sk> >>,
+Michal Josef Špaček L<< <skim@cpan.org> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
+The code is hosted on GitHub L<http://github.com/tupinek/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
+
+=head1 LICENSE
+
+ This is free software; you can redistribute it and/or modify it under the same terms as the Perl 5 programming language system itself.
 
 =cut
 

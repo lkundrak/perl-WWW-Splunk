@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 NAME
 
 WWW::Splunk::XMLParser - Parse Splunk XML format
@@ -19,6 +21,8 @@ use warnings;
 
 use XML::LibXML qw/:libxml/;
 use Carp;
+
+our $VERSION = '2.07';
 
 =head2 B<parse> (F<string>)
 
@@ -104,10 +108,15 @@ L<WWW::Splunk>, L<WWW::Splunk::API>, L<XML::LibXML>
 
 =head1 AUTHORS
 
-Lubomir Rintel, L<< <lkundrak@v3.sk> >>
+Lubomir Rintel, L<< <lkundrak@v3.sk> >>,
+Michal Josef Špaček L<< <skim@cpan.org> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
+The code is hosted on GitHub L<http://github.com/tupinek/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
+
+=head1 LICENSE
+
+ This is free software; you can redistribute it and/or modify it under the same terms as the Perl 5 programming language system itself.
 
 =cut
 

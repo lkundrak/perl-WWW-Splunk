@@ -1,3 +1,27 @@
+2.06    Sat Apr 8 00:27:12 2017 +0200
+======================================
+[DOC]
+Add LICENSE file
+Add LICENSE header to doc
+Add minimal version of Perl
+Add README file
+Fix email in doc
+
+2.05    Fri Apr 7 12:17:03 2017 +0200
+======================================
+[FIXES]
+Fix documentation
+Fix get calling
+Proper handling of HTTP 204 response
+Remove extra check for Client-SSL-Warning header
+
+[CODE]
+Add support for Kerberos (e.g. via LWP::Authen::Negotiate)
+Add verbose parameter
+
+[DOC]
+Change maintainer and repository
+
 2.04    Tue Aug 20 17:29:57 2013 +0200
 ======================================
 [FIXES]

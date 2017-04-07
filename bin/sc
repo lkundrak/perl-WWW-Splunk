@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+=encoding utf8
+
 =head1 NAME
 
 sc - Splunk Client
@@ -30,6 +32,8 @@ use Pod::Usage;
 
 use strict;
 use warnings;
+
+our $VERSION = '2.07';
 
 # Subcommand dispatch
 
@@ -220,9 +224,10 @@ L<WWW::Splunk>, L<WWW::Splunk::API>
 
 =head1 AUTHORS
 
-Lubomir Rintel, L<< <lkundrak@v3.sk> >>
+Lubomir Rintel, L<< <lkundrak@v3.sk> >>,
+Michal Josef Špaček L<< <skim@cpan.org> >>
 
-The code is hosted on GitHub L<http://github.com/lkundrak/perl-WWW-Splunk>.
+The code is hosted on GitHub L<http://github.com/tupinek/perl-WWW-Splunk>.
 Bug fixes and feature enhancements are always welcome.
 
 =cut
