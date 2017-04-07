@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+=encoding utf8
+
 =head1 NAME
 
 sc - Splunk Client
