@@ -42,14 +42,15 @@
    "provides" : {
       "WWW::Splunk" : {
          "file" : "lib/WWW/Splunk.pm",
-         "version" : "2.0"
+         "version" : "2.05"
       },
       "WWW::Splunk::API" : {
          "file" : "lib/WWW/Splunk/API.pm",
-         "version" : "2.0"
+         "version" : "2.05"
       },
       "WWW::Splunk::XMLParser" : {
-         "file" : "lib/WWW/Splunk/XMLParser.pm"
+         "file" : "lib/WWW/Splunk/XMLParser.pm",
+         "version" : "2.05"
       }
    },
    "release_status" : "stable",

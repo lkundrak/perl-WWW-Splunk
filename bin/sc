@@ -33,6 +33,8 @@ use Pod::Usage;
 use strict;
 use warnings;
 
+our $VERSION = '2.05';
+
 # Subcommand dispatch
 
 my %commands = (

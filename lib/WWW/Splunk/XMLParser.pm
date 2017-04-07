@@ -22,6 +22,8 @@ use warnings;
 use XML::LibXML qw/:libxml/;
 use Carp;
 
+our $VERSION = '2.05';
+
 =head2 B<parse> (F<string>)
 
 Return a perl structure from a XML string, if it's
